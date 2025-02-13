@@ -1,3 +1,8 @@
-node_modules
-.node-persist
+# Node.js dependencies
+node_modules/
+
+# Persistent storage
+.node-persist/
+
+# Environment variables
 .env
