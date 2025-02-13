@@ -29,6 +29,7 @@ let sell_count = 0;
 storage.init();
 
 bot.setMyCommands([
+    {command:'/menu',description:'Show Menu'},
     { command: '/buy', description: 'Buy token using SOL or another supported token.' },
     { command: '/sell', description: 'Sell token for SOL or another supported token.' },
     { command: '/wallet', description: 'Create and configure your wallet.' },
@@ -54,6 +55,10 @@ bot.on("message", async (msg) => {
     } else if (messageText.startsWith("/")) {
         const command = messageText.slice(1).toLowerCase();
         switch (command) {
+            case "menu":
+                //Check if user has a wallet
+                home(chatId, bot);
+                break;
             case "start":
                 //Check if user has a wallet
                 await connectDB();
