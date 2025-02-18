@@ -3,7 +3,7 @@ require('dotenv').config();
 const coinTicker = require('coin-ticker');
 const web3 = require('@solana/web3.js');
 const storage = require('node-persist');
-const { get_info, get_Price } = require('./Helius');
+const { get_info,getTokenDetails,  get_Price } = require('./Helius');
 const connection = new web3.Connection(process.env.RPC_URL);
 
 storage.init();

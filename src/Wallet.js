@@ -16,6 +16,7 @@ storage.init();
  */
 const Wallet = async (chatId, bot, msgId) => {
     let user_pub_key;
+    try{
 
     await storage.getItem(`userWallet_${chatId}`).then(async (userWallet) => {
         user_pub_key = userWallet.publicKey;
@@ -62,6 +63,9 @@ const Wallet = async (chatId, bot, msgId) => {
             parse_mode: "html",
         });
     }
+}catch(error){
+    console.log("error:", error);
+}
 };
 
 module.exports = {

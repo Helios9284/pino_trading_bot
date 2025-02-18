@@ -29,7 +29,7 @@ let sell_count = 0;
 storage.init();
 
 bot.setMyCommands([
-    {command:'/menu',description:'Show Menu'},
+    { command: '/menu', description:'Show Menu'},
     { command: '/buy', description: 'Buy token using SOL or another supported token.' },
     { command: '/sell', description: 'Sell token for SOL or another supported token.' },
     { command: '/wallet', description: 'Create and configure your wallet.' },
@@ -92,8 +92,8 @@ bot.on("message", async (msg) => {
             case "sell":
                 await storage.getItem(`userWallet_${chatId}`).then(async (userWallet) => {
                     if(userWallet?.privateKey && userWallet?.publicKey){
-                        user_pri_key = userWallet?.privateKey;
-                        user_pub_key = userWallet?.publicKey;
+                        user_pri_key = userWallet.privateKey;
+                        user_pub_key = userWallet.publicKey;
                     }
                 });
 

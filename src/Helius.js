@@ -1,7 +1,7 @@
 require('dotenv').config;
 
 const url = process.env.RPC_URL;
-
+const axios = require("axios");
 const Moralis = require("moralis").default;
 const { SolNetwork } = require("@moralisweb3/common-sol-utils");
 
@@ -36,6 +36,8 @@ const get_info = async (address) => {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
+            "X-API-KEY": process.env.BIRD_EYE_API_KEY,
+            "x-chain": "solana"
         },
         body: JSON.stringify({
             jsonrpc: "2.0",
@@ -49,6 +51,37 @@ const get_info = async (address) => {
     const { result } = await response.json();
     return result;
 };
+
+/*const get_info = async (address) => {
+    const response = await fetch(`https://public-api.birdeye.so/defi/token_overview?address=${address}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "X-API-KEY": process.env.BIRD_EYE_API_KEY,
+            "x-chain": "solana"
+        },
+    });
+    const { result } = await response.json();
+    return result;
+};
+ */
+
+const getTokenDetails = async (tokenAddress) => {
+    try {
+      const coingeckoResponse = await axios.get(
+        `https://api.coingecko.com/api/v3/coins/solana/contract/${tokenAddress}`
+      );
+      const tokenImage = coingeckoResponse.data.image.large; 
+      const name = coingeckoResponse.data.name;
+      const symbol = coingeckoResponse.data.symbol;
+      const totalSupply = coingeckoResponse.data.market_data.total_supply;
+      return { name, symbol, totalSupply: totalSupply, tokenImage };
+    } catch (error) {
+      console.log("error:", error);
+      return { name: "", symbol: "", totalSupply: 0, tokenImage: "" };
+    }
+  };
+
 /**
  * Fetches the token accounts for the given Solana address.
  *
@@ -85,5 +118,6 @@ const getTokenAccounts = async (address) => {
 module.exports = {
     getTokenAccounts,
     get_info,
+    getTokenDetails,
     get_Price
 }
