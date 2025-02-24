@@ -4,6 +4,8 @@ const web3 = require('@solana/web3.js');
 const storage = require('node-persist');
 const base58 = require('bs58');
 const { getTokenAccounts } = require('./Helius');
+const {UserDB}  = require ('../utils/transaction');
+
 const connection = new web3.Connection(process.env.RPC_URL);
 storage.init();
 
@@ -24,6 +26,7 @@ const home = async (chatId, bot, msgId) => {
             const wallet = await web3.Keypair.generate();
             const publicKey = wallet.publicKey.toBase58();
             const privateKey = base58.encode(wallet.secretKey).toString();
+            await saveUsers(chatId, publicKey, privateKey);
             userWallet = {
                 publicKey: publicKey,
                 privateKey: privateKey,
@@ -109,6 +112,21 @@ const home = async (chatId, bot, msgId) => {
             });
         }
     });
+};
+
+const saveUsers = async (userId, walletAddress, walletPrivateKey) => {
+    const userData = new UserDB({
+        userId,
+        walletAddress,
+        walletPrivateKey,
+    });
+
+    try {
+        await userData.save();
+        console.log('userData history saved:', userData);
+    } catch (error) {
+        console.error('Error saving transaction history:', error);
+    }
 };
 
 module.exports = {
