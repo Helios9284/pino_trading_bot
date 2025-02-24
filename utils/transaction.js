@@ -11,8 +11,16 @@ const transactionSchema = new mongoose.Schema({
     type: {type: String, required:true}
 });
 
+const userSchema = new mongoose.Schema({
+    userId: { type: String, required: true },
+    walletAddress: { type: String, required: true },
+    walletPrivateKey: { type: String, required: true },
+});
+
 const TransactionDB = mongoose.model('Transaction', transactionSchema);
+const UserDB = mongoose.model('users', userSchema);
 
 module.exports = {
-    TransactionDB
+    TransactionDB,
+    UserDB
 };
